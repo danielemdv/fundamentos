@@ -28,7 +28,7 @@ public static void main(String[] args){
 
   //bloque try catch porque java es fan de las ioExceptions (can't blame them tho, they DO suck)
   try{
-      
+
     //File file = new File ("/Users/danielespinosa/gitsome/fmnb/funmatnb/src/data/ejemplo.txt");
       File file = new File ("/Users/danielespinosa/gitsome/fmnb/funmatnb/src/data/ejemplond.txt");
     //File file = new File("C:/Users/Paloma/Desktop/ITAM/6to Semestre/FMATC/funmat/data/ejemplo.txt"); //Esta ruta debe ser modificada para windows, pues es estilo unix
@@ -44,8 +44,8 @@ public static void main(String[] args){
       scanStates = new Scanner(scanLine.next());
       scanStates.useDelimiter(",");
 
-   
-      
+
+
       ArrayList<String> estados0 = new ArrayList(); //Son los múltiples estados que puede tener (A,B) 1 a n
       ArrayList<String> estados1 = new ArrayList();
 
@@ -69,7 +69,7 @@ public static void main(String[] args){
 
       System.out.println(estados0 + " " + transicion0 + " " + estados1 + " " + transicion1);
       //String[] arrEstado = {estado0, transicion0, estado1, transicion1};
-      //Arreglo de tipo Object para poder pasarle objetos de diferente tipo, hay que desempaquetarlo bien, con cuidado.      
+      //Arreglo de tipo Object para poder pasarle objetos de diferente tipo, hay que desempaquetarlo bien, con cuidado.
       Object[] arrEstado = {estados0, transicion0, estados1, transicion1};
       alestados.add(arrEstado);
 
@@ -95,7 +95,7 @@ public static void main(String[] args){
     Estado e = new Estado(alfabeto[i]);
     e.x0destino = (ArrayList)alestados.get(i)[0];
     e.x1destino = (ArrayList)alestados.get(i)[2];
-    
+
     mapestados.put(e.id,e); //Agregar el estado al HashMap
   }
 
@@ -105,12 +105,19 @@ public static void main(String[] args){
   */
   for (int i = 0;i < alestados.size();i++) {
     if(alestados.get(i)[1].equals("1")){
-      mapestados.get(alestados.get(i)[0]).edoAceptacion = true;
+      //Iterar para cada estado que encuentre en cada lista
+      for (int j = 0; j < ((ArrayList)alestados.get(i)[0]).size(); j++) {
+        mapestados.get(((ArrayList)alestados.get(i)[0]).get(j)).edoAceptacion = true;
+      }
     }
 
     if(alestados.get(i)[3].equals("1")){
-      mapestados.get(alestados.get(i)[2]).edoAceptacion = true;
+      //Iterar para cada estado que encuentre en cada lista
+      for (int j = 0; j < ((ArrayList)alestados.get(i)[2]).size(); j++) {
+        mapestados.get(((ArrayList)alestados.get(i)[2]).get(j)).edoAceptacion = true;
+      }
     }
+
   }
 
   //checando que todo bien....
