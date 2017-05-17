@@ -29,9 +29,9 @@ public static void main(String[] args){
   //bloque try catch porque java es fan de las ioExceptions (can't blame them tho, they DO suck)
   try{
       
-     //File file = new File ("../data/ejemplo.txt");
-    //file de Paloma
-    File file = new File("C:/Users/Paloma/Desktop/ITAM/6to Semestre/FMATC/funmat/data/ejemplo.txt"); //Esta ruta debe ser modificada para windows, pues es estilo unix
+    //File file = new File ("/Users/danielespinosa/gitsome/fmnb/funmatnb/src/data/ejemplo.txt");
+      File file = new File ("/Users/danielespinosa/gitsome/fmnb/funmatnb/src/data/ejemplond.txt");
+    //File file = new File("C:/Users/Paloma/Desktop/ITAM/6to Semestre/FMATC/funmat/data/ejemplo.txt"); //Esta ruta debe ser modificada para windows, pues es estilo unix
     Scanner fileScanner = new Scanner(file); //Scanner para el archivo
     Scanner scanLine; //Scanner para las lineas individuales
     Scanner scanStates; //Scanner para los estados
@@ -93,12 +93,11 @@ public static void main(String[] args){
   //Ir creando objetos estado con los estados a los que pueden transicionar.
   for (int i = 0;i < alestados.size() ;i++ ) {
     Estado e = new Estado(alfabeto[i]);
-    e.x0destino = (String)alestados.get(i)[0];
-    e.x1destino = (String)alestados.get(i)[2];
+    e.x0destino = (ArrayList)alestados.get(i)[0];
+    e.x1destino = (ArrayList)alestados.get(i)[2];
     
     mapestados.put(e.id,e); //Agregar el estado al HashMap
   }
-
 
   /*Ir checando los estados que son de aceptacion.
     En caso de que uno sea, con el HashMap lo encontramos
