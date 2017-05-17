@@ -28,7 +28,10 @@ public static void main(String[] args){
 
   //bloque try catch porque java es fan de las ioExceptions (can't blame them tho, they DO suck)
   try{
-    File file = new File("../data/ejemplo.txt"); //Esta ruta debe ser modificada para windows, pues es estilo unix
+      
+     //File file = new File ("../data/ejemplo.txt");
+    //file de Paloma
+    File file = new File("C:/Users/Paloma/Desktop/ITAM/6to Semestre/FMATC/funmat/data/ejemplo.txt"); //Esta ruta debe ser modificada para windows, pues es estilo unix
     Scanner fileScanner = new Scanner(file); //Scanner para el archivo
     Scanner scanLine; //Scanner para las lineas individuales
     Scanner scanStates; //Scanner para los estados
@@ -41,7 +44,9 @@ public static void main(String[] args){
       scanStates = new Scanner(scanLine.next());
       scanStates.useDelimiter(",");
 
-      ArrayList<String> estados0 = new ArrayList();
+   
+      
+      ArrayList<String> estados0 = new ArrayList(); //Son los múltiples estados que puede tener (A,B) 1 a n
       ArrayList<String> estados1 = new ArrayList();
 
       //leer estados0
@@ -52,7 +57,7 @@ public static void main(String[] args){
       //leer el tipo de estados0
       String transicion0 = scanLine.next();
 
-      scanStates = new Scanner(scanLine.next());
+      scanStates = new Scanner(scanLine.next()); //Reinicializo en ScanStates para leer los siguientes estados que igual pueden ser multiples.
       scanStates.useDelimiter(",");
 
       //leer estados1
@@ -63,11 +68,9 @@ public static void main(String[] args){
       String transicion1 = scanLine.next();
 
       System.out.println(estados0 + " " + transicion0 + " " + estados1 + " " + transicion1);
-
-
       //String[] arrEstado = {estado0, transicion0, estado1, transicion1};
-      //Arreglo de tipo Object para poder pasarle objetos de diferente tipo, hay que desempaquetarlo bien, con cuidado.
-      Object[] arrEstado = {estados0, transicion0, estados1, transicion2};
+      //Arreglo de tipo Object para poder pasarle objetos de diferente tipo, hay que desempaquetarlo bien, con cuidado.      
+      Object[] arrEstado = {estados0, transicion0, estados1, transicion1};
       alestados.add(arrEstado);
 
     }
@@ -90,8 +93,9 @@ public static void main(String[] args){
   //Ir creando objetos estado con los estados a los que pueden transicionar.
   for (int i = 0;i < alestados.size() ;i++ ) {
     Estado e = new Estado(alfabeto[i]);
-    e.x0destino = alestados.get(i)[0];
-    e.x1destino = alestados.get(i)[2];
+    e.x0destino = (String)alestados.get(i)[0];
+    e.x1destino = (String)alestados.get(i)[2];
+    
     mapestados.put(e.id,e); //Agregar el estado al HashMap
   }
 
