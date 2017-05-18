@@ -54,6 +54,8 @@ public void pruebaMeta(){
     System.out.println("Edo: " + edos[i].id + "    Out: " + edos[i].edoAceptacion);
   }
 
+  System.out.println("Es determinista?: " + this.esDeterminista());
+
 
 
 }
@@ -69,9 +71,10 @@ public void determinar(){
 
 
   //Identificar metaestados
-  //ArrayList<String[]> metaEstados = detMetaestados();
+  HashMap<String, Estado> metaEstados = detMetaestados();
 
   //Crear tabla intermedia
+
 
   //derivar tabla final
 
@@ -187,6 +190,12 @@ public HashMap<String, Estado> detMetaestados(){
 
 }
 
+/*
+public HashMap<String, Estado> tablaMetaestados(){
+  
+
+}
+*/
 
 //Método para regresar un String ordenado de manera lexicografica.
 public String ordenarLex(String s){

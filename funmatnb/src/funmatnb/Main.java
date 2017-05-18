@@ -30,7 +30,7 @@ public static void main(String[] args){
   try{
 
     //File file = new File ("/Users/danielespinosa/gitsome/fmnb/funmatnb/src/data/ejemplo.txt");
-      File file = new File ("/Users/danielespinosa/gitsome/fmnb/funmatnb/src/data/ejemplond.txt");
+      File file = new File ("/Users/danielespinosa/gitsome/fmnb/funmatnb/src/data/ejemploPalo.txt");
     //File file = new File("C:/Users/Paloma/Desktop/ITAM/6to Semestre/FMATC/funmat/data/ejemplo.txt"); //Esta ruta debe ser modificada para windows, pues es estilo unix
     Scanner fileScanner = new Scanner(file); //Scanner para el archivo
     Scanner scanLine; //Scanner para las lineas individuales
