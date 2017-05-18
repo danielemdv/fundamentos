@@ -190,12 +190,12 @@ public HashMap<String, Estado> detMetaestados(){
 
 }
 
-/*
+
 public HashMap<String, Estado> tablaMetaestados(){
-  
+
 
 }
-*/
+
 
 //Método para regresar un String ordenado de manera lexicografica.
 public String ordenarLex(String s){
