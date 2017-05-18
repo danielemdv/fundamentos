@@ -68,7 +68,7 @@ public static void main(String[] args){
       String transicion1 = scanLine.next();
 
       System.out.println(estados0 + " " + transicion0 + " " + estados1 + " " + transicion1);
-      //String[] arrEstado = {estado0, transicion0, estado1, transicion1};
+
       //Arreglo de tipo Object para poder pasarle objetos de diferente tipo, hay que desempaquetarlo bien, con cuidado.
       Object[] arrEstado = {estados0, transicion0, estados1, transicion1};
       alestados.add(arrEstado);
@@ -127,6 +127,8 @@ public static void main(String[] args){
 
   Automata a = new Automata(mapestados);
 
+  //Seccion de pruebas para ver como vamos
+  a.pruebaMeta();
 
 
 

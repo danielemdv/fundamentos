@@ -33,42 +33,63 @@ public Automata(HashMap<String, Estado> estados){
 
 //Funcion que determina si este automata es determinista
 public boolean esDeterminista(){
-  return true;
+  boolean res = true;
+
+  Estado[] edos = estados.values().toArray(new Estado[estados.size()]);
+
+  for (int i = 0; i< edos.length ; i++) {
+    if(edos[i].x0destino.size() > 1 || edos[i].x0destino.get(0).equals("-")  || edos[i].x1destino.size() > 1  || edos[i].x1destino.get(0).equals("-")){
+      return false;
+    }
+  }
+  return res;
+}
+
+public void pruebaMeta(){
+
+  HashMap<String, Estado> metaEstados = detMetaestados();
+  Estado[] edos = metaEstados.values().toArray(new Estado[metaEstados.size()]);
+
+  for (int i = 0; i < edos.length ;i++ ) {
+    System.out.println("Edo: " + edos[i].id + "    Out: " + edos[i].edoAceptacion);
+  }
+
+
 
 }
 
 
 public void determinar(){
+
+
   //Checa primero si es o no es determinsta. En caso de que no lo sea, procede con la determinacion
-  /*
-    if(this.esDeterminista()){
-      return;
-    }
-
-  */
+  if(this.esDeterminista()){
+    return;
+  }
 
 
-/*
-determinar metaestados (detMetaestados)
-Crear tabla intermedia.
-Derivar de esa la tabla final
-*/
+  //Identificar metaestados
+  //ArrayList<String[]> metaEstados = detMetaestados();
+
+  //Crear tabla intermedia
+
+  //derivar tabla final
+
 
 }
 
 //volver al automata determinista si es que no lo es
-public ArrayList<String[]> detMetaestados(){
-/*Regresa un ArrayList de tipo String[2]. La primera entrada es el string del metaestado y la
-  segunda es un String que es "1" si el metaestado es de aceptacion, si no es "0"
-*/
+public HashMap<String, Estado> detMetaestados(){
 
 
-  Estado[] edos = (Estado[])estados.values().toArray();
-  ArrayList<String[]> metaEstados = new ArrayList();
+  Estado[] edos = estados.values().toArray(new Estado[estados.size()]);
+
+  ArrayList<String[]> metaEstados = new ArrayList(); //phasing out this old fella
+
+  HashMap<String, Estado> metaEstadosHM = new HashMap();
 
   //Agregamos el primer estado, pues siempre es el de entrada. Agregamos si es o no de aceptacion (en este proyecto no se puede)
-  String[] s = {edos[0].id,((edos[0].edoAceptacion) ? ("1"):("0"))};
-  metaEstados.add(s);
+  metaEstadosHM.put(edos[0].id,edos[0]);
 
   boolean flagVacio = false; //Flag que se debe poner en true para saber si se debe agregar el estado vacio.
 
@@ -77,16 +98,16 @@ public ArrayList<String[]> detMetaestados(){
 
     //variables para los metaestados
     String x0 = "";
-    String x0Aceptation = "0";
+    String x0Aceptacion = "0";
     String x1 = "";
-    String x1Aceptation = "0";
+    String x1Aceptacion = "0";
 
     for (int j = 0; j < edos[i].x0destino.size() ; j++) {
       x0 += edos[i].x0destino.get(j);
 
       //Si alguno de los estados agregados es de aceptacion, todo el metaestado es de aceptacion tambien
       if(estados.get(edos[i].x0destino.get(j)).edoAceptacion){
-        x0Aceptation = "1";
+        x0Aceptacion = "1";
       }
 
     }
@@ -95,7 +116,7 @@ public ArrayList<String[]> detMetaestados(){
       x1 += edos[i].x1destino.get(j);
 
       if(estados.get(edos[i].x1destino.get(j)).edoAceptacion){
-        x1Aceptation = "1";
+        x1Aceptacion = "1";
       }
     }
 
@@ -108,29 +129,61 @@ public ArrayList<String[]> detMetaestados(){
     x0 = ordenarLex(x0);
     x1 = ordenarLex(x1);
 
+
+    //creo que no se necesita esto
+    boolean repetidos = false;
+    if(x0.equals(x1)){
+      repetidos = true;
+    }
+
+    //Para el primer estado, settear sus metaestados de transicion
+    if(i == 0){
+      metaEstadosHM.get(edos[i].id).setEstadosDet(x0,x1);
+    }
+
+    if(!metaEstadosHM.containsValue(x0) && !x0.isEmpty()){
+      Estado e = new Estado(x0);
+      if(x0Aceptacion.equals("1")){
+        e.edoAceptacion = true;
+      }
+      metaEstadosHM.put(x0, e);
+    }
+
+    if(!metaEstadosHM.containsValue(x1) && !x1.isEmpty()){
+      Estado e = new Estado(x1);
+      if(x1Aceptacion.equals("1")){
+        e.edoAceptacion = true;
+      }
+      metaEstadosHM.put(x1, e);
+    }
+
+    /*
     //Asegurar que no se repita un metaestado ya contemplado y que no sean vacios
-    if(metaEstados.indexOf(x0) == -1 && !x0.isEmpty()){
-      String[] m0 = {x0, x0Aceptation};
+    String[] m0 = {x0, x0Aceptacion};
+    if(!metaEstados.contains(m0) && !x0.isEmpty()){
       metaEstados.add(m0);
     }
 
-    if(metaEstados.indexOf(x1) == -1 && !x1.isEmpty()){
-      String[] m1 = {x1, x1Aceptation};
-      metaEstados.add(m1);
+    //Si son iguales no se agrega este
+    if(!repetidos){
+      String[] m1 = {x1, x1Aceptacion};
+      if(!metaEstados.contains(m1) && !x1.isEmpty()){
+        metaEstados.add(m1);
+      }
     }
+    */
 
   }//end for
 
   //Agregar el estado vacio solamente si es necesario
   if(flagVacio){
-    if(metaEstados.indexOf("-") == -1){
-      String[] v = {"-", "0"};
-      metaEstados.add(v);
+    if(!metaEstadosHM.containsValue("-")){
+      Estado e = new Estado("-");
+      metaEstadosHM.put("-", e);
     }
   }
 
-
-  return metaEstados;
+  return metaEstadosHM;
 
 }
 

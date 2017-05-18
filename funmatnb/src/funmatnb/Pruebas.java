@@ -1,33 +1,28 @@
 package funmatnb;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class Pruebas {
 
     public static void main(String[] args) {
 
-      ArrayList<String> al = new ArrayList();
+      String s = "CBA";
 
-      al.add("Hola");
+      s = ordenarLex(s);
 
-      for (int i = 0; i < 10 ; i++) {
-        al.add("a");
-      }
-
-      al.add("prueba");
-
-      System.out.println("El normal: " + al.indexOf("Hola"));
-
-      String h = "a";
-      System.out.println("El compuesto: " + al.indexOf(h));
-
-      System.out.println("El otro: " + al.indexOf("prueba"));
-
-      System.out.println("El otro: " + al.indexOf("oo"));
+      System.out.println(s);
 
 
+    }
 
+    //Método para regresar un String ordenado de manera lexicografica.
+    public static String ordenarLex(String s){
+      char[] chars = s.toCharArray();
+      Arrays.sort(chars);
+      String sorted = new String(chars);
+      return sorted;
     }
 
 

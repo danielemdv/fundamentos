@@ -13,6 +13,19 @@ public ArrayList<String> x1destino;
 public Estado(String id){
   this.id = id;
   edoAceptacion = false;
+  x0destino = new ArrayList();
+  x1destino = new ArrayList();
+}
+
+//Constructor para utilizar cuando estamos armando estados deterministas (i.e. destinos de 1 solo estado)
+public Estado(String id, String x0, String x1){
+  this.id = id;
+  edoAceptacion = false;
+  x0destino = new ArrayList();
+  x1destino = new ArrayList();
+
+  x0destino.add(x0);
+  x1destino.add(x1);
 }
 
 
@@ -26,6 +39,16 @@ public Estado(String id,boolean edoAceptacion, ArrayList<String> x0destino, Arra
 
 public String toString(){
   return "id: " + id + ", edoAceptacion: " + edoAceptacion + ", x0destino: " + x0destino + ", x1destino: " + x1destino;
+}
+
+//Metodo para agregar solo un estado a los arrayLists de estados a los que puede hacer transicion
+public void setEstadosDet(String x0, String x1){
+
+  //borron de los estados anteriores, solamente queremos los agregados
+  x0destino = new ArrayList();
+  x1destino = new ArrayList();
+  x0destino.add(x0);
+  x1destino.add(x1);
 }
 
 
