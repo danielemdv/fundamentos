@@ -55,6 +55,17 @@ public void pruebaMeta(){
   }
 
   System.out.println("Es determinista?: " + this.esDeterminista());
+
+  HashMap<String, Estado> tablaMetaEdos = tablaMetaestados(metaEstados);
+  edos = tablaMetaEdos.values().toArray(new Estado[tablaMetaEdos.size()]);
+
+
+  System.out.println("Despues de la determinacion a metaestados");
+  for (int i = 0; i < edos.length ;i++ ) {
+    System.out.println("Edo: " + edos[i].id + "    Out: " + edos[i].edoAceptacion);
+  }
+
+
 }
 
 
@@ -186,11 +197,11 @@ public HashMap<String, Estado> detMetaestados(){
 
 }
 
-
+//Se le pasa el hashmap que ya tiene metaestados identificados
 public HashMap<String, Estado> tablaMetaestados(HashMap<String, Estado> hmIn){
 
   //tenemos estados. El hashmap del automata en crudo
-  ArrayList<Estado> metaEstados1 = (ArrayList<Estado>)Arrays.asList(hmIn.values().toArray(new Estado[hmIn.size()]));
+  ArrayList<Estado> metaEstados1 = new ArrayList(Arrays.asList(hmIn.values().toArray(new Estado[hmIn.size()])));
   HashMap<String, Estado> metaEstadosHM = new HashMap();
 
   //variables para los metaestados
@@ -207,8 +218,13 @@ public HashMap<String, Estado> tablaMetaestados(HashMap<String, Estado> hmIn){
     if(metaEstados1.get(i).id.length() > 1){
 
       //Conseguir a donde puede ir el estado, tanto para 0 como para 1 y checar si ya existe.
-      x0 = metaEstados1.get(i).getx0Meta();
-      x1 = metaEstados1.get(i).getx1Meta();
+      x0 = getx0Meta(metaEstados1.get(i).id);
+      x1 = getx1Meta(metaEstados1.get(i).id);
+
+      System.out.println("Id del cual quiero metaestados: " + metaEstados1.get(i).id); //DEBUGGING
+
+      System.out.println("metaEstadosx0: " + x0); //DEBUGGING
+      System.out.println("metaEstadosx1: " + x1); //DEBUGGING
 
       //revisamos si ya existen los metaestados, si no, los instanciamos y lo agregamos.
       if(!hmIn.containsKey(x0)){
@@ -237,7 +253,11 @@ public HashMap<String, Estado> tablaMetaestados(HashMap<String, Estado> hmIn){
     }
   }
 
-  //falta llenar el nuevo hashmap
+
+  for (int i = 0; i < metaEstados1.size() ; i++) {
+    metaEstadosHM.put(metaEstados1.get(i).id, metaEstados1.get(i));
+  }
+
   return metaEstadosHM;
 }
 
@@ -286,6 +306,9 @@ private boolean esEstadoAceptacion(String id){
 }
 
 private String eliminaRepeticiones(String s){
+  if(s.length() == 0){
+    return "";
+  }
   String res = "";
   int i = 0;
   int j;
@@ -299,6 +322,33 @@ private String eliminaRepeticiones(String s){
     }
   }
   return res;
+}
+
+
+//Dado un id, obtener su metaestado de transicion para x0
+public String getx0Meta(String id){
+  //Vamos a construir el metaestado jalando la info para cada estado individuales
+  //del hashmap inicial.
+  String x0 = "";
+  for (int i = 0; i < estados.get(id).x0destino.size(); i++) {
+    x0 += estados.get(id).x0destino.get(i);
+  }
+  x0 = ordenarLex(x0);
+  x0 = eliminaRepeticiones(x0);
+  return x0;
+}
+
+//Dado un id, obtener su metaestado de transicion para x1
+public String getx1Meta(String id){
+  //Vamos a construir el metaestado jalando la info para cada estado individuales
+  //del hashmap inicial.
+  String x1 = "";
+  for (int i = 0; i < estados.get(id).x1destino.size(); i++) {
+    x1 += estados.get(id).x1destino.get(i);
+  }
+  x1 = ordenarLex(x1);
+  x1 = eliminaRepeticiones(x1);
+  return x1;
 }
 
 

@@ -8,14 +8,17 @@ public class Pruebas {
 
     public static void main(String[] args) {
 
+
       String s = "CBAAAFFFRRTOOIUFIABBBCCD";
 
       s = ordenarLex(s);
       System.out.println("Ordenado : " + s);
 
-      s = eliminaRepeticiones(s);
+      s = eliminaRepeticiones("");
 
       System.out.println("Sin repeticiones: " + s);
+
+
 
 
     }
@@ -29,6 +32,9 @@ public class Pruebas {
     }
 
     public static String eliminaRepeticiones(String s){
+      if(s.length() == 0){
+        return "";
+      }
       String res = "";
       int i = 0;
       int j;
