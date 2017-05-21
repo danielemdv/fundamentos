@@ -8,15 +8,18 @@ public class Pruebas {
 
     public static void main(String[] args) {
 
+      Conjunto c = new Conjunto();
+      String s = "AB";
+      Estado e = new Estado(s);
+      c.add(e);
 
-      String s = "CBAAAFFFRRTOOIUFIABBBCCD";
+      System.out.println(c.contains(e));
+      System.out.println(c.contains(new Estado("BA")));
+      System.out.println(c.contains(new Estado("ABCC")));
 
-      s = ordenarLex(s);
-      System.out.println("Ordenado : " + s);
+      c.add(new Estado("BBDDCA"));
 
-      s = eliminaRepeticiones("");
-
-      System.out.println("Sin repeticiones: " + s);
+      System.out.println(c.toString());
 
 
 
