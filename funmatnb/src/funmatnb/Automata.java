@@ -55,9 +55,6 @@ public void pruebaMeta(){
   }
 
   System.out.println("Es determinista?: " + this.esDeterminista());
-
-
-
 }
 
 
@@ -75,6 +72,17 @@ public void determinar(){
 
   //Crear tabla intermedia
 
+  /*
+    Con todos los metaestados obtenidos, debemos crear la tabla 'intermedia'.
+    Esta tabla dira a donde mappean o transicionan todos los metaestados
+
+    Debemos saber si se dejaron de agregar estados nuevos para no tener que reprocesar toda la cosa.
+
+    HashMap<String, Estado> metaEstadosFinal = tablaMetaestados(metaEstados);
+
+
+  */
+
 
   //derivar tabla final
 
@@ -87,7 +95,7 @@ public HashMap<String, Estado> detMetaestados(){
 
   Estado[] edos = estados.values().toArray(new Estado[estados.size()]);
 
-  ArrayList<String[]> metaEstados = new ArrayList(); //phasing out this old fella
+  //ArrayList<String[]> metaEstados = new ArrayList(); //phasing out this old fella
 
   HashMap<String, Estado> metaEstadosHM = new HashMap();
 
@@ -105,6 +113,8 @@ public HashMap<String, Estado> detMetaestados(){
     String x1 = "";
     String x1Aceptacion = "0";
 
+    //Aqui iteramos los estados a los que transiciona el estado i con x = 0. Los concatenamos en la variable x0
+    //Tambien guardamos x0Aceptacion = 1 en caso de que el estado que acabamos de concatenar es de aceptacion
     for (int j = 0; j < edos[i].x0destino.size() ; j++) {
       x0 += edos[i].x0destino.get(j);
 
@@ -112,9 +122,10 @@ public HashMap<String, Estado> detMetaestados(){
       if(estados.get(edos[i].x0destino.get(j)).edoAceptacion){
         x0Aceptacion = "1";
       }
-
     }
 
+
+    //Hacemos lo mismo que lo anterior pero para las transiciones a x1
     for (int j = 0; j < edos[i].x1destino.size() ; j++) {
       x1 += edos[i].x1destino.get(j);
 
@@ -160,21 +171,6 @@ public HashMap<String, Estado> detMetaestados(){
       metaEstadosHM.put(x1, e);
     }
 
-    /*
-    //Asegurar que no se repita un metaestado ya contemplado y que no sean vacios
-    String[] m0 = {x0, x0Aceptacion};
-    if(!metaEstados.contains(m0) && !x0.isEmpty()){
-      metaEstados.add(m0);
-    }
-
-    //Si son iguales no se agrega este
-    if(!repetidos){
-      String[] m1 = {x1, x1Aceptacion};
-      if(!metaEstados.contains(m1) && !x1.isEmpty()){
-        metaEstados.add(m1);
-      }
-    }
-    */
 
   }//end for
 
@@ -191,10 +187,60 @@ public HashMap<String, Estado> detMetaestados(){
 }
 
 
-public HashMap<String, Estado> tablaMetaestados(){
+public HashMap<String, Estado> tablaMetaestados(HashMap<String, Estado> hmIn){
+
+  //tenemos estados. El hashmap del automata en crudo
+  ArrayList<Estado> metaEstados1 = (ArrayList<Estado>)Arrays.asList(hmIn.values().toArray(new Estado[hmIn.size()]));
+  HashMap<String, Estado> metaEstadosHM = new HashMap();
+
+  //variables para los metaestados
+  String x0 = "";
+  String x0Aceptacion = "0";
+  String x1 = "";
+  String x1Aceptacion = "0";
+
+  //boolean newFlag = false; //Bandera para saber si se agrego un metaEstado nuevo y debemos seguir procesando la tabla
+
+  //iterar sobre todos los metaestados con longitud mayor a 1 (Pues los demas ya los hicimos)
+  int numMetaEstados = metaEstados1.size();
+  for (int i = 0; i < numMetaEstados ; i++) {
+    if(metaEstados1.get(i).id.length() > 1){
+
+      //Conseguir a donde puede ir el estado, tanto para 0 como para 1 y checar si ya existe.
+      x0 = metaEstados1.get(i).getx0Meta();
+      x1 = metaEstados1.get(i).getx1Meta();
+
+      //revisamos si ya existen los metaestados, si no, los instanciamos y lo agregamos.
+      if(!hmIn.containsKey(x0)){
+        Estado e = new Estado(x0);
+        String[] trans = encontrarTransicionesParaMetaestados(x0);
+        e.setEstadosDet(trans[0], trans[1]);
+        e.edoAceptacion = esEstadoAceptacion(e.id);
+        metaEstados1.add(e);
+        numMetaEstados++; //Decimos que ya hay un nuevo metaestado
+        //newFlag = true;
+      }
+
+      //igual pero para x1
+      if(!hmIn.containsKey(x1)){
+        Estado e = new Estado(x1);
+        String[] trans = encontrarTransicionesParaMetaestados(x1);
+        e.setEstadosDet(trans[0], trans[1]);
+        e.edoAceptacion = esEstadoAceptacion(e.id);
+        metaEstados1.add(e);
+        numMetaEstados++; //Decimos que ya hay un nuevo metaestado
+        //newFlag = true;
+      }
 
 
+
+    }
+  }
+
+  //falta llenar el nuevo hashmap
+  return metaEstadosHM;
 }
+
 
 
 //Método para regresar un String ordenado de manera lexicografica.
@@ -205,6 +251,55 @@ public String ordenarLex(String s){
   return sorted;
 }
 
+//regresa un String[2] donde String[0] es el de x0 y String[1] es el de x1
+//(basicamente hace una union entre los estados a los que transicionan los estados que componen al metaestado)
+private String[] encontrarTransicionesParaMetaestados(String id){
+  String x0 = "";
+  String x1 = "";
+
+
+  for (int i = 0; i < id.length() ; i++) {
+    Estado e = estados.get(id.charAt(i) + "");
+    x0 += e.getx0Meta();
+    x1 += e.getx1Meta();
+  }
+
+  x0 = ordenarLex(x0);
+  x1 = ordenarLex(x1);
+
+  //Eliminar repetidos de los metaestados
+  x0 = eliminaRepeticiones(x0);
+  x1 = eliminaRepeticiones(x1);
+
+  return new String[] {x0, x1};
+}
+
+//dado el id de un estado o metaestado, regresar si es de aceptacion
+private boolean esEstadoAceptacion(String id){
+  boolean res = false;
+  for (int i = 0; i < id.length() ; i++) {
+    if(estados.get(id.charAt(i) + "").edoAceptacion){
+      res = true;
+    }
+  }
+  return res;
+}
+
+private String eliminaRepeticiones(String s){
+  String res = "";
+  int i = 0;
+  int j;
+
+  res+= "" + s.charAt(0);
+
+  for (j = 1; j < s.length() ;j++ ) {
+    if(s.charAt(i) != s.charAt(j)){
+      res += "" + s.charAt(j);
+      i = j;
+    }
+  }
+  return res;
+}
 
 
 
