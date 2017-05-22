@@ -96,15 +96,7 @@ public class Determinator {
     e.edoAceptacion = aceptacion;
   }
 
-
-
-
-
-
-
-
-
-
+  
   //---------HELPERS-------------------------
 
 

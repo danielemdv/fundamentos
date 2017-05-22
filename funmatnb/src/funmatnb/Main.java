@@ -151,7 +151,8 @@ public static void main(String[] args){
 
 Conjunto c = Determinator.determinarAutomata(mapestados);
 System.out.println("Imprimiendo conjunto de metaestdos procesaditos: ");
-System.out.println(c.toString());
+System.out.print(c.toStringFull());
+System.out.print(c.tablaParaSebas());
 
 }
 

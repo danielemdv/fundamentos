@@ -12,6 +12,8 @@ private ArrayList<String> stateKeys;
 //Estructura interna para guardar los metaestados de acuerdo a su nombre
 private HashMap<String, Estado> states;
 
+public String[] alfabeto = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+
 public Conjunto(){
   stateKeys = new ArrayList();
   states = new HashMap();
@@ -53,6 +55,15 @@ public String toString(){
   return res.toString();
 }
 
+public String toStringFull(){
+  StringBuilder res = new StringBuilder ();
+  for (int i = 0; i < stateKeys.size() ; i++) {
+    res.append(states.get(stateKeys.get(i)).toString() + "\n");
+  }
+  return res.toString();
+
+}
+
 public int size(){
   return stateKeys.size();
 }
@@ -63,6 +74,33 @@ public Estado getState(String s){
 
 public ArrayList<String> getKeys(){
   return stateKeys;
+}
+
+public String tablaParaSebas(){
+
+  HashMap<String, String> hmrt = new HashMap();
+  for (int i = 0; i < stateKeys.size() ; i++) {
+    hmrt.put(stateKeys.get(i),alfabeto[i]);
+  }
+
+  StringBuilder s = new StringBuilder();
+  for (int i = 0; i < stateKeys.size() ; i++) {
+    Estado e = states.get(stateKeys.get(i));
+    String x0 = e.getx0Meta();
+    String x1 = e.getx1Meta();
+    String x0A = "0";
+    String x1A = "0";
+
+    if(states.get(x0).edoAceptacion){
+      x0A = "1";
+    }
+
+    if(states.get(x1).edoAceptacion){
+      x1A = "1";
+    }
+    s.append(hmrt.get(x0) + "\t" + x0A + "\t" +  hmrt.get(x1) + "\t" + x1A + "\n");
+  }
+  return s.toString();
 }
 
 
