@@ -42,6 +42,10 @@ public String toString(){
   return "id: " + id + ", edoAceptacion: " + edoAceptacion + ", x0destino: " + x0destino + ", x1destino: " + x1destino;
 }
 
+public String toStringMeta(){
+  return "id: " + id + ", edoAceptacion: " + edoAceptacion + ", x0destinoMETA: " + getx0Meta() + ", x1destinoMETA: " + getx1Meta();
+}
+
 //Metodo para agregar solo un estado a los arrayLists de estados a los que puede hacer transicion
 public void setEstadosDet(String x0, String x1){
   //borron de los estados anteriores, solamente queremos los agregados

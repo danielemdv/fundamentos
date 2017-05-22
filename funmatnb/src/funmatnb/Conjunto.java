@@ -56,6 +56,10 @@ public int size(){
   return stateKeys.size();
 }
 
+public Estado getState(String s){
+  return states.get(s);
+}
+
 public ArrayList<String> getKeys(){
   return stateKeys;
 }

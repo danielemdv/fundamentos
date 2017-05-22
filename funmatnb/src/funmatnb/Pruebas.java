@@ -21,6 +21,31 @@ public class Pruebas {
 
       System.out.println(c.toString());
 
+      System.out.println("-------");
+
+      Estado e1 = c.getState(c.getKeys().get(0));
+
+
+      //e1.setEstadosDet("ABC", "D");
+
+      e1.x0destino.add("A");
+      e1.x0destino.add("B");
+      e1.x0destino.add("C");
+
+      e1.x1destino.add("D");
+      e1.x1destino.add("T");
+
+
+      System.out.println(e1.toStringMeta());
+      System.out.println(e1.toString());
+
+      System.out.println("----------Probando eliminacion de estados vacios");
+
+      String a = "-a";
+
+      System.out.println(a);
+      System.out.println(eliminaEstadosVacios(a));
+
 
 
 
@@ -48,6 +73,21 @@ public class Pruebas {
         if(s.charAt(i) != s.charAt(j)){
           res += "" + s.charAt(j);
           i = j;
+        }
+      }
+      return res;
+    }
+
+    public static String eliminaEstadosVacios(String s){
+      if(s.length() <= 1){
+        return "";
+      }
+      String res = "";
+      int i;
+
+      for (i = 0; i < s.length() ; i++) {
+        if(s.charAt(i) != '-'){
+          res += s.charAt(i) + "";
         }
       }
       return res;
