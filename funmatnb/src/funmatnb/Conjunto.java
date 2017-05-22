@@ -45,11 +45,12 @@ public boolean contains(Estado e){
 }
 
 public String toString(){
-  String res = "";
+    StringBuilder res = new StringBuilder ();
+  
   for (int i = 0; i < stateKeys.size() ; i++) {
-    res += stateKeys.get(i) + "\n";
+    res.append(stateKeys.get(i) + "\n");
   }
-  return res;
+  return res.toString();
 }
 
 public int size(){
