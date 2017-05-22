@@ -26,6 +26,8 @@ public static void main(String[] args){
 
   System.out.println("Leyendo datos:");
 
+  boolean flagEstadoVacio = false;
+
   //bloque try catch porque java es fan de las ioExceptions (can't blame them tho, they DO suck)
   try{
 
@@ -72,6 +74,10 @@ public static void main(String[] args){
       //Arreglo de tipo Object para poder pasarle objetos de diferente tipo, hay que desempaquetarlo bien, con cuidado.
       Object[] arrEstado = {estados0, transicion0, estados1, transicion1};
       alestados.add(arrEstado);
+      //Chequeo si hubo un estado vacio
+      if(estados0.contains("-") || estados0.contains("-")){
+        flagEstadoVacio = true;
+      }
 
     }
 
@@ -120,9 +126,20 @@ public static void main(String[] args){
 
   }
 
+  //Agregar el estado vacio si es que aparece
+  if(flagEstadoVacio){
+    Estado e = new Estado("-");
+    e.setEstadosDet("-", "-");
+    mapestados.put(e.id,e);
+  }
+
   //checando que todo bien....
   for (int i = 0; i < alestados.size() ;i++ ) {
     System.out.println(mapestados.get(alfabeto[i]).toString());
+  }
+
+  if(flagEstadoVacio){
+    System.out.println(mapestados.get("-").toString());
   }
 
 /*
@@ -135,9 +152,6 @@ public static void main(String[] args){
 Conjunto c = Determinator.determinarAutomata(mapestados);
 System.out.println("Imprimiendo conjunto de metaestdos procesaditos: ");
 System.out.println(c.toString());
-
-
-
 
 }
 

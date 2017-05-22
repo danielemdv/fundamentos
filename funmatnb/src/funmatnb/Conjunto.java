@@ -45,8 +45,8 @@ public boolean contains(Estado e){
 }
 
 public String toString(){
-    StringBuilder res = new StringBuilder ();
-  
+  StringBuilder res = new StringBuilder ();
+
   for (int i = 0; i < stateKeys.size() ; i++) {
     res.append(stateKeys.get(i) + "\n");
   }

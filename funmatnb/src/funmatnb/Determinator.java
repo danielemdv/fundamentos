@@ -30,13 +30,15 @@ public class Determinator {
 
       //Checamos si los metaestados a los que transiciona ya estan en el conjunto
       //En caso de que no, los agregamos para que este proceso se repita para todos.
-      if(!c.contains(new Estado(e.getx0Meta()))){ //realmente no necesitamos esto...
-        c.add(new Estado(e.getx0Meta()));
-      }
+      //if(!c.contains(new Estado(e.getx0Meta()))){ //realmente no necesitamos esto...
+      //  c.add(new Estado(e.getx0Meta()));
+      //}
+      c.add(new Estado(e.getx0Meta()));
 
-      if(!c.contains(new Estado(e.getx1Meta()))){ //realmente no necesitamos esto...
-        c.add(new Estado(e.getx1Meta()));
-      }
+      //if(!c.contains(new Estado(e.getx1Meta()))){ //realmente no necesitamos esto...
+      //  c.add(new Estado(e.getx1Meta()));
+      //}
+      c.add(new Estado(e.getx1Meta()));
 
 
 
@@ -90,6 +92,7 @@ public class Determinator {
     x1 = eliminaEstadosVacios(x1);
 
     e.setEstadosDet(x0, x1);
+    System.out.println("DEBUGGING: Estamos diciendo que el estado con id: " + e.id + ", x0: " + x0 + ", x1: " + x1); // DEBUGGING
     e.edoAceptacion = aceptacion;
   }
 
@@ -132,18 +135,23 @@ public class Determinator {
     return res;
   }
 
-  private static String eliminaEstadosVacios(String s){
-    if(s.length() <= 1){
-      return "";
-    }
-    String res = "";
-    int i;
 
-    for (i = 0; i < s.length() ; i++) {
+  private static String eliminaEstadosVacios(String s){
+    String res = "";
+    if(s.length() == 0){
+      return "";
+    } else if (s.length() == 1 && s.equals("")){
+        res = "-";
+    }
+    for (int i = 0; i < s.length() ; i++) {
       if(s.charAt(i) != '-'){
         res += s.charAt(i) + "";
       }
     }
+    if (res == "")
+        res = "-";
     return res;
   }
+
+
 }

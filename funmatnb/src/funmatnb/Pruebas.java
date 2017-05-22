@@ -46,6 +46,9 @@ public class Pruebas {
       System.out.println(a);
       System.out.println(eliminaEstadosVacios(a));
 
+      System.out.println("Probando con 'C'");
+      System.out.println(eliminaEstadosVacios(""));
+
 
 
 
@@ -78,18 +81,20 @@ public class Pruebas {
       return res;
     }
 
-    public static String eliminaEstadosVacios(String s){
-      if(s.length() <= 1){
-        return "";
-      }
+    private static String eliminaEstadosVacios(String s){
       String res = "";
-      int i;
-
-      for (i = 0; i < s.length() ; i++) {
+      if(s.length() == 0){
+        return "";
+      } else if (s.length() == 1 && s.equals("")){
+          res = "-";
+      }
+      for (int i = 0; i < s.length() ; i++) {
         if(s.charAt(i) != '-'){
           res += s.charAt(i) + "";
         }
       }
+      if (res == "")
+          res = "-";
       return res;
     }
 
