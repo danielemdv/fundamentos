@@ -125,11 +125,16 @@ public static void main(String[] args){
     System.out.println(mapestados.get(alfabeto[i]).toString());
   }
 
+/*
   Automata a = new Automata(mapestados);
 
   //Seccion de pruebas para ver como vamos
   a.pruebaMeta();
+*/
 
+Conjunto c = Determinator.determinarAutomata(mapestados);
+System.out.println("Imprimiendo conjunto de metaestdos procesaditos: ");
+System.out.println(c.toString());
 
 
 

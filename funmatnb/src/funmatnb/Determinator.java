@@ -33,6 +33,13 @@ public class Determinator {
       if(!c.contains(new Estado(e.getx0Meta()))){ //realmente no necesitamos esto...
         c.add(new Estado(e.getx0Meta()));
       }
+
+      if(!c.contains(new Estado(e.getx1Meta()))){ //realmente no necesitamos esto...
+        c.add(new Estado(e.getx1Meta()));
+      }
+
+
+
       i++;
     }
 
